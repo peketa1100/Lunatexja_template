@@ -1,0 +1,25 @@
+﻿% ---------------------------------------------------------
+% 日本語フォント設定
+% ---------------------------------------------------------
+% 日本語フォント（Windows）
+\setmainfont{Noto Serif}      % 欧文本文：セリフ
+\setsansfont{Noto Sans}       % 欧文ゴシック
+\setmainjfont{Noto Serif JP}  % 和文明朝（本文）
+\setsansjfont{Noto Sans JP}   % 和文ゴシック（見出し用）
+
+% 日本語の太字を有効化（luatexja）
+\ltjsetparameter{jacharrange={-2}} % 日本語の太字を許可
+% 日本語ゴシック体（キャプション専用）
+\newjfontfamily\captionjfont{Noto Sans JP}[
+  UprightFeatures = { Weight = 400 }, % Regular
+  BoldFeatures    = { Weight = 700 }  % Bold
+]
+\newjfontfamily\JPSans{Noto Sans JP}[
+  UprightFeatures = { Weight = 400 }, % Regular
+  BoldFeatures    = { Weight = 700 }  % Bold
+]
+% コード用日本語ゴシック体
+\newjfontfamily\codejfont{Noto Sans JP}[
+  UprightFeatures = { Weight = 400 },
+  BoldFeatures    = { Weight = 700 }
+]

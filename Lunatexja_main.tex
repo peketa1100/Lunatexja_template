@@ -1,0 +1,200 @@
+\documentclass[10pt,twoside]{book}
+
+\input{preamble/packages}
+\input{preamble/fonts}
+\input{preamble/colors}
+\input{preamble/layout}
+\input{preamble/header-footer}
+\input{preamble/chapter-style}
+%\input{preamble/cover-style}
+\input{preamble/section-style}
+\input{preamble/column-style}
+\input{preamble/code-style}
+
+\title{（使わない）}
+\author{（使わない）}	
+\date{}%これで日付を非表示にできる
+
+% ================================================================
+
+\begin{document}
+%\maketitle
+
+%\chapter*{はじめに}
+\frontmatter
+\tableofcontents
+\mainmatter
+
+\newpage
+\chapter{pLaTeX から LuaLaTeX へ}
+\label{chap:architecture-basics}
+TeXは長年pLaTeXが使われていたが、 LuaLaTeX への移行が進んでいる。本章ではその背景とLuaLaTeX の優位性について説明します。
+
+
+\newpage
+\section{なぜ今 LuaLaTeX なのか}
+
+2024年11月、LaTeXチーム（LaTeX Project）は LaTeX News 40 にて、
+LuaTeX 以外のエンジンのフルサポートを段階的に終了する方針を公式に発表しました。
+
+日本国内でも、定番の入門書『美文書作成入門』が第9版（2023年12月）から LuaLaTeX を標準エンジンとして採用しています。
+また、大学などの教育機関でも pLaTeX から LuaLaTeX への移行が進んでいます。
+
+\section{LuaLaTeX の優位性}
+\subsection{フォントの自由度}
+
+LuaLaTeX では \verb|\setmainjfont、\newjfontfamily| などのコマンドにより、OS にインストールされた任意のフォントをウェイト・スタイル単位で細かく制御できます。
+このため、市販書籍レベルのTeX文書の生成が容易に可能となります。
+一方、pLaTeXではフォント制御が限定的です。
+
+\vspace{5mm}
+\subsection{Unicode 完全対応}
+pLaTeX は1980年代、Unicode 1.0 リリース以前に設計されたため、限定された文字集合しか扱えません。
+LuaLaTeX ではUTF-8をネイティブ入力とし、Unicode全範囲に対応しています。
+
+\vspace{5mm}
+\subsection{PDF 直接出力、PDF/A準拠・メタデータ管理}
+pLaTeX は DVI ファイルを中間生成し dvipdfmx で PDF に変換する2段階プロセスが必要ですが、
+LuaLaTeX は pdfTeX の後継として PDF を直接出力することができます。
+これによりビルド工程が簡素化され、PDF のバージョン指定や PDF/A 準拠もエンジンレベルで制御可能となっています。
+
+また、LuaLaTeX では hyperref + hyperxmp（または pdfx）を用いることで、以下が容易に実現できます。
+\begin{description}
+	\item [PDF/A-3u 準拠] 長期保存・アーカイブ用のISO規格に対応
+	\item [XMP メタデータ] タイトル・著者・キーワード等を標準的な形式で埋め込み
+	\item [PDF バージョン指定] pdfversion=1.7 等を明示的に設定可能
+	\item [日本語しおり（ブックマーク）] pxjahyper 等の追加パッケージなしで Unicode しおりが正常動作
+\end{description}
+
+\vspace{15mm}
+\begin{columnbox}[{\faLightbulb\hspace{0.5em} 現時点ではpLaTeX の方が有利な点}]
+以下の点については、LuaLaTeX よりもpLaTeX 側の方が利点がある。
+	\begin{description}
+	\item [コンパイル速度] 
+	ベンチマーク比較では、pLaTeX が平均 2.98秒に対し LuaLaTeX は平均 7.68秒と、約2.5倍の差 がある。
+	大規模文書ではこの差が顕著になる。特にオンライン環境ではタイムアウトが発生するケースも報告されている。
+
+	\item[レガシー資産との互換性] 日本の学会・学術誌が提供するスタイルファイルの多くは pLaTeX（jsarticle / jsbook ベース）向けに作成されている。
+	これらをそのまま使用する場合、pLaTeX が必要となるケースがある。
+
+	\item[メモリ使用量]LuaTeX-ja は日本語フォント処理のためメモリ消費が大きく、一部のフォントでは64ビット処理系が必須となる。
+	\end{description}
+\end{columnbox}
+
+\chapter{テンプレート構成と使い方}
+\newpage
+\section{preamble フォルダ構成}
+
+本テンプレートでは、LaTeX のプリアンブルを役割ごとに分割し、
+保守性と再利用性を高めています。各ファイルの役割は以下の通りです。
+
+\begin{verbatim}
+preamble/
+ ├ packages.tex
+ ├ fonts.tex
+ ├ colors.tex
+ ├ layout.tex
+ ├ header-footer.tex
+ ├ chapter-style.tex
+ ├ section-style.tex
+ ├ column-style.tex
+ └ code-style.tex
+\end{verbatim}
+
+\begin{description}
+  \item[preamble/packages.tex] 使用するパッケージをまとめて読み込みます。
+  日本語処理、色、図表、コード、見出し、余白、ヘッダ・フッタなど、
+  テンプレート全体の基盤となる設定が含まれます。
+
+  \item[preamble/fonts.tex] 欧文・和文フォントの設定を行います。
+  Noto 系フォントを中心に、本文・見出し・コード用フォントを定義します。
+
+  \item[preamble/colors.tex] セクション帯、章扉、コラム、コード枠線など、
+  テンプレートで使用する色を定義します。
+
+  \item[preamble/layout.tex] A5 判のページレイアウト、余白、行間などを設定します。
+  見開き（twoside）に最適化されています。
+
+  \item[preamble/header-footer.tex] fancyhdr によるヘッダ・フッタ（柱）の設定です。
+  左ページに章タイトル、右ページにセクションタイトルを表示します。
+
+  \item[preamble/chapter-style.tex] 章扉のデザインを定義します。
+  背景帯、章番号、章タイトルのレイアウトを含みます。
+
+  \item[preamble/section-style.tex] セクション見出しのデザインを定義します。
+  青帯＋黒文字＋ゴシック太字のスタイルで統一されています。
+  番号なしセクション用の \texttt{\textbackslash plainsection} もここに含まれます。
+
+  \item[preamble/column-style.tex] コラム（囲み記事）のデザインを定義します。
+  tcolorbox を用いた枠線・背景色・アイコンなどの設定が含まれます。
+
+  \item[preamble/code-style.tex] listings によるコード表示の設定です。
+  背景色、行番号、キーワード色、枠線などを統一しています。
+\end{description}
+
+\section{テンプレートの使い方}
+
+\subsection{基本構造}
+
+本テンプレートを使用する際の基本構造は以下の通りです。
+
+\begin{pycode}[1]
+\documentclass[10pt,twoside]{book}
+\input{preamble/packages}
+\input{preamble/fonts}
+\input{preamble/colors}
+\input{preamble/layout}
+\input{preamble/header-footer}
+\input{preamble/chapter-style}
+\input{preamble/section-style}
+\input{preamble/column-style}
+\input{preamble/code-style}
+
+\begin{document}
+
+\tableofcontents
+
+\chapter{はじめに}
+本文…
+
+\section{セクションタイトル}
+本文…
+
+\plainsection{番号なしセクション}
+本文…
+
+\end{document}
+\end{pycode}
+
+\subsection{番号なしセクションについて}
+
+標準の \texttt{\textbackslash section*} は本テンプレートのデザインと互換性がないため、
+番号なしセクションには \texttt{\textbackslash plainsection} を使用します。
+
+
+\subsection{PDF ビューワの見開き設定}
+
+Adobe Reader を使用する場合は、以下の設定を推奨します。
+
+\begin{itemize}
+  \item 見開きページ表示
+  \item 表紙を見開きに表示
+\end{itemize}
+
+これにより、左ページ＝偶数、右ページ＝奇数の正しい製本順で表示されます。
+
+\subsection{表紙について}
+
+本テンプレートでは \texttt{\textbackslash maketitle} を使用しません。
+表紙は後で別 PDF として作成する方針です。
+
+\section{注意点}
+
+\begin{itemize}
+  \item \texttt{\textbackslash section*} は使用しないでください。
+  \item コードは listings を使用し、tcolorbox で囲む構造です。
+  \item 章扉は自動的にページ番号なしになります。
+  \item レイアウトは A5 判に最適化されています。
+\end{itemize}
+
+\end{document}

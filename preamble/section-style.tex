@@ -1,0 +1,103 @@
+﻿% --------------------------------------------------------
+
+% セクション見出しデザイン
+% --------------------------------------------------------
+% 見出しデザイン（技術書風）
+
+
+\makeatletter
+\def\SectionTitle{}
+\def\ttl@save@title#1{\gdef\SectionTitle{#1}}
+\makeatother
+
+% --- Section：青背景＋黒文字＋ゴシック太字 ---
+\let\oldsection\section
+
+\renewcommand{\section}[1]{%
+  \refstepcounter{section}%
+  \SectionHeading{\thesection}{#1}%
+}
+
+\newcommand{\SectionHeading}[2]{%
+  \sectionmark{#2} % ← ★ これが右ページの柱に必要
+  \addcontentsline{toc}{section}{\protect\numberline{\thesection}#2}
+  \vspace{1.5em}%
+  \noindent
+  \colorbox{sectionblue}{% sectionblueから変更
+    \parbox{\linewidth}{%
+      \vspace{2pt}%
+      {%
+        \Large\bfseries\sffamily\color{black}%
+        \JPSans % ← 和文だけ Noto Sans JP に切り替える
+        #1\quad #2%
+      }%
+      \vspace{2pt}%
+    }%
+  }%
+  \vspace{1.2em}%
+}
+
+% 番号なしセクション（\section* の代替）
+\newcommand{\plainsection}[1]{%
+  \vspace{1.5em}%
+  \noindent
+  \colorbox{sectionblue}{%
+    \parbox{\linewidth}{%
+      \vspace{2pt}%
+      {%
+        \Large\bfseries\sffamily\color{black}%
+        \JPSans % ← 和文だけ Noto Sans JP に切り替える
+        #1%
+      }%
+      \vspace{2pt}%
+    }%
+  }%
+  \vspace{1.2em}%
+}
+
+
+
+% --- Subsection：黒ゴシック太字＋下に青ライン ---
+
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
+\newcommand{\SubsectionHeading}[1]{%
+  \refstepcounter{subsection}%
+  %\addcontentsline{toc}{subsection}{\protect\numberline{\thesubsection}#1} % 章番号を目次にも出力する場合
+  \addcontentsline{toc}{subsection}{#1} % 章番号を目次にも出力しない場合
+  \par\vspace{1.0em}% ← ① 平文との間に確実に改行を入れる
+  \noindent % ← ★ これが重要：自動インデントを消す
+  {\large\bfseries\sffamily\JPSans\color{black}%
+    % \thesubsection\quad #1% ← ★ 章番号を出力する
+    #1% ← ★ 章番号を出力しない
+  }%
+  \par\vspace{-1.2em}% ← ② 見出しとラインの距離を詰める
+  \noindent % ← ★ これが重要：自動インデントを消す
+  {\color{sectionblue}\rule{\linewidth}{2pt}}%
+  %\vspace{0.6em}% ← ラインの下の余白
+  \par\vspace{0.4em}% ← ★ 見出しの後に確実に改行＋余白
+}
+
+\renewcommand{\subsection}[1]{%
+  \SubsectionHeading{#1}%
+}
+
+% --- Subsubsection：本文サイズ＋黒ゴシック太字 ---
+\newcommand{\SubsubsectionHeading}[1]{%
+  \par\vspace{0.8em}% 本文との間隔
+  \noindent
+  {\normalsize\bfseries\sffamily\JPSans\color{black}%
+    #1% ← ★ 章番号を出力しない
+  }%
+  \par\vspace{0.4em}% ← ★ 見出しの後に確実に改行＋余白
+}
+
+\renewcommand{\subsubsection}[1]{%
+  \SubsubsectionHeading{#1}%
+}
+
+% --- 見出しつきの箇条書きを太文字にする設定 
+\renewcommand*\descriptionlabel[1]{%
+  \hspace\labelsep
+  {\bfseries\sffamily\JPSans\color{black} #1}%
+}

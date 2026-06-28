@@ -1,0 +1,44 @@
+﻿% ---------------------------------------------------------
+% ヘッダ・フッタ（落ち着いた市販書籍風）
+% ---------------------------------------------------------
+\pagestyle{fancy}
+
+% --- ヘッダのフォント（ゴシック体） ---
+\newcommand{\HeaderFont}{\small\sffamily\JPSans}
+
+% --- 章タイトル（chapter）を記録 ---
+\renewcommand{\chaptermark}[1]{%
+  \markboth{\thechapter\quad #1}{}%
+}
+
+
+% --- 節タイトル（section）を記録 ---
+\renewcommand{\sectionmark}[1]{%
+  \markright{\thesection\quad #1}%
+}
+
+
+% --- ヘッダ設定 ---
+\fancyhf{} % 既存の設定をクリア
+
+% 偶数ページ（左ページ）：章タイトル
+\fancyhead[LE]{\HeaderFont \leftmark}
+
+% 奇数ページ（右ページ）：節タイトル
+\fancyhead[RO]{\HeaderFont \rightmark}
+
+% ページ番号を外側寄せ
+\fancyfoot[LE]{\HeaderFont \thepage} % 偶数ページ（Left Even）
+\fancyfoot[RO]{\HeaderFont \thepage} % 奇数ページ（Right Odd）
+
+% ヘッダの下線を消す（技評風）
+\renewcommand{\headrulewidth}{0pt}
+
+% --- plain スタイル（目次・章扉などで使われる）を外側寄せに再定義 ---
+\fancypagestyle{plain}{
+  \fancyhf{}
+  % ページ番号を外側寄せ
+  \fancyfoot[LE]{\HeaderFont \thepage} % 偶数ページ（左）
+  \fancyfoot[RO]{\HeaderFont \thepage} % 奇数ページ（右）
+  \renewcommand{\headrulewidth}{0pt}   % ヘッダ線なし（技評風）
+}

@@ -1,0 +1,106 @@
+﻿% ============================================================
+% code-style.tex
+% A5 技術書テンプレート用：listings + tcolorbox のコード環境
+% ============================================================
+% listing の枠線・背景を消す
+%	\floatstyle{plain}
+%	\restylefloat{listing}
+
+% listing の上下余白を詰める
+%	\setlength{\intextsep}{0pt}
+%	\setlength{\textfloatsep}{0pt}
+
+% ------------------------------------------------------------
+% 必要パッケージ
+% ------------------------------------------------------------
+% \usepackage{listingsutf8}   % 日本語対応 listings
+% \usepackage[most]{tcolorbox}
+% \usepackage{xcolor}
+\lstset{inputencoding=utf8} 
+
+% ------------------------------------------------------------
+% 色定義（コード用）
+% ------------------------------------------------------------
+\definecolor{codebg}{HTML}{F5F5F5}
+\definecolor{keywordblue}{HTML}{005CC5}
+\definecolor{stringred}{HTML}{D73A49}
+\definecolor{commentgray}{HTML}{777777} % ← 行番号・コメントの色
+\definecolor{framegray}{HTML}{D0D7DE}
+
+% ------------------------------------------------------------
+% listings 共通スタイル
+% ------------------------------------------------------------
+\lstdefinestyle{mypython-base}{
+  language=Python,
+  backgroundcolor=\color{codebg},
+  % basicstyle=\codejfont\ttfamily\small,   % ← 和文＋欧文ゴシック体
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{keywordblue},
+  stringstyle=\color{stringred},
+  commentstyle=\codejfont\color{commentgray},
+  showstringspaces=false,
+  breaklines=true,
+  tabsize=4,
+  columns=fullflexible,
+}
+
+% ------------------------------------------------------------
+% 行番号あり
+% ------------------------------------------------------------
+\lstdefinestyle{mypython}{
+  style=mypython-base,
+  numbers=left,
+  numberstyle=\codejfont\color{commentgray}\small, % ← 太字を外して控えめに
+  numbersep=5pt,   % 行番号とコードの距離
+}
+
+% ------------------------------------------------------------
+% 行番号なし
+% ------------------------------------------------------------
+\lstdefinestyle{mypython-nonum}{
+  style=mypython-base,
+  numbers=none,
+}
+
+% ------------------------------------------------------------
+% tcolorbox によるコードブロック定義
+% ------------------------------------------------------------
+
+% 行番号あり：開始行をオプションで指定（デフォルト 1）
+\newtcblisting{pycode}[1][1]{%
+  listing only,
+  listing style=mypython,
+  colback=codebg,
+  colframe=framegray,
+  boxrule=0.4pt,
+  arc=3pt,
+  outer arc=3pt,
+  left=2.0em,   % ← 行番号あり／なしで左端を揃える
+  right=4pt,
+  top=2pt,
+  bottom=2pt,
+  enhanced,
+  breakable,
+  before upper=\lstset{firstnumber=#1},
+}
+
+% 行番号なし
+\newtcblisting{pycodenonum}{%
+  listing only,
+  listing style=mypython-nonum,
+  colback=codebg,
+  colframe=framegray,
+  boxrule=0.4pt,
+  arc=3pt,
+  outer arc=3pt,
+  left=2.0em,   % ← 行番号なしでも左端を揃える
+  right=4pt,
+  top=4pt,
+  bottom=4pt,
+  enhanced,
+  breakable,
+}
+
+% ============================================================
+% ここまで
+% ============================================================

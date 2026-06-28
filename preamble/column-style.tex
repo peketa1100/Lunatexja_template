@@ -1,0 +1,28 @@
+﻿% ----------------------------------------
+% コラム枠表示（背景色・枠線・フォント調整）
+% ----------------------------------------
+
+
+\newtcolorbox{columnbox}[1][]{
+  enhanced,
+  breakable,
+  colback=white,
+  colframe=framegray,
+  colbacktitle=framegray,
+  coltitle=black,
+  fonttitle=\bfseries\sffamily\JPSans,
+  title={#1},
+  fontupper=\sffamily\JPSans\footnotesize,
+  %before upper={\setlength{\parindent}{1em}},
+  before upper={
+    \addcontentsline{toc}{subsection}{#1}%
+    \setlength{\parindent}{1em}%
+  },
+ before skip=2.0em,
+  after skip=2.0em,
+  left=8pt,
+  right=8pt,
+  top=8pt,
+  bottom=8pt,
+  boxrule=0.4pt
+}

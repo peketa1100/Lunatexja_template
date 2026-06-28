@@ -1,0 +1,27 @@
+﻿
+% 章扉背景（ページ全面を確実に塗りつぶす）
+\newcommand{\ChapterBackground}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    % ページ全体より少し大きめに塗る（塗り残し防止）
+    \fill[chapterblue]
+      ([xshift=-5mm,yshift=5mm]current page.north west)
+        rectangle
+      ([xshift=5mm,yshift=-5mm]current page.south east);
+  \end{tikzpicture}%
+}
+
+% 章デザイン（bbe風：背景色＋装飾）
+\titleformat{\chapter}[display]
+  {\bfseries\Huge}
+  {%
+    \ChapterBackground
+    \vspace*{3cm}
+    \filright\Large\textsf{CHAPTER\ \thechapter}
+  }
+  {1ex}
+  {%
+    \titlerule[1.2pt]
+    \vspace{2ex}
+    \filright\Huge
+  }
+  [\vspace{2cm}]
