@@ -9,7 +9,7 @@ markdown
 ---
 
 ## 📁 ディレクトリ構成
-
+```
 project/
 ├── main.tex
 ├── preamble/
@@ -23,6 +23,7 @@ project/
 │   ├── column-style.tex
 │   └── code-style.tex
 └── Lunatexja_main.tex   ← テンプレート解説書（LaTeX 版）
+```
 
 ## 📂 preamble フォルダの説明
 
