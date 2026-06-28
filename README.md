@@ -17,6 +17,7 @@ project/
 │   ├── fonts.tex
 │   ├── colors.tex
 │   ├── layout.tex
+│   ├── layoutA4report.tex ← A4レポート形式用
 │   ├── header-footer.tex
 │   ├── chapter-style.tex
 │   ├── section-style.tex
@@ -117,8 +118,7 @@ Adobe Reader を使用する場合は、以下の設定を推奨します。
 
 ## ⚠ 注意点
 - \section* は使用しないでください（デザインが崩れます）
-- コードは listings を使用し、tcolorbox で囲む構造です
-
-章扉は自動的にページ番号なしになります
-
-レイアウトは A5 判に最適化されています
+- 章扉は自動的にページ番号なしになります
+- レイアウトは A5 判に最適化されています
+- layoutA4report.texを読み込むことで、A4レポート形式での出力も可能です。
+    - 詳細は、A4reportFoemat.pdfを参照ください。
